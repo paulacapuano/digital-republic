@@ -1,16 +1,22 @@
 package com.test.dgcoding.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import org.hibernate.validator.constraints.br.CPF;
+
+import javax.persistence.*;
 
 @Entity
 public class Client {
     @Id
     @GeneratedValue
+    @Column
     private Integer id;
+    @Column
     private String name;
+    @Column
+    @CPF
     private String cpf;
+    @OneToOne
+    private Account accountId;
 
     public Client() {
     }
@@ -20,7 +26,7 @@ public class Client {
         this.cpf = cpf;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 

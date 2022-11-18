@@ -1,21 +1,34 @@
 package com.test.dgcoding.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.test.dgcoding.repository.AccountRepository;
+
+import javax.persistence.*;
 
 @Entity
 public class Account {
     @Id
     @GeneratedValue
+    @Column
     private Integer id;
+    @Column (nullable = false)
+    @GeneratedValue
     private Integer accountNumber;
+    @Column
     private Double balance;
+    @OneToOne
+    @Column
+    private Client client;
 
     public Account () {
     }
 
-    public String getId() {
+    public Account(Integer accountNumber, Client client) {
+        this.accountNumber = accountNumber;
+        this.balance = 0.0;
+        this.client = client;
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -33,5 +46,23 @@ public class Account {
 
     public void setBalance(Double balance) {
         this.balance = balance;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Account updateAccount(Integer id, AccountRepository accountRepository) {
+        Account account = accountRepository.getOne(id);
+
+        account.setAccountNumber(this.accountNumber);
+        account.setBalance(this.balance);
+        account.setClient(this.client);
+
+        return account;
     }
 }
